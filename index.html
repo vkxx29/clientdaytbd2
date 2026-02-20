@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QSOFT — Каталог решений</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            padding: 20px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #222;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0096ff;
+            margin-bottom: 5px;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        select, input[type="text"] {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #e0e0e0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            min-width: 150px;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #0096ff;
+        }
+
+        .view-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .view-tab {
+            padding: 8px 16px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #888;
+            transition: all 0.2s;
+        }
+
+        .view-tab:hover {
+            border-color: #0096ff;
+            color: #e0e0e0;
+        }
+
+        .view-tab.active {
+            background: #0096ff;
+            border-color: #0096ff;
+            color: #fff;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid #222;
+            border-radius: 8px;
+            background: #111;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            background: #1a1a1a;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #888;
+            border-bottom: 2px solid #333;
+        }
+
+        th.section-header {
+            background: #0096ff;
+            color: #fff;
+            text-align: center;
+            font-size: 10px;
+            padding: 6px 15px;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #1a1a1a;
+            max-width: 250px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        tr:hover td {
+            background: #1a1a1a;
+        }
+
+        .id-cell {
+            font-family: monospace;
+            color: #0096ff;
+            font-weight: 600;
+        }
+
+        .name-cell {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            margin: 2px;
+        }
+
+        .tag-category {
+            background: rgba(0, 150, 255, 0.15);
+            color: #0096ff;
+        }
+
+        .tag-industry {
+            background: rgba(80, 200, 120, 0.15);
+            color: #50c878;
+        }
+
+        .tag-role {
+            background: rgba(255, 165, 0, 0.15);
+            color: #ffa500;
+        }
+
+        .tag-size {
+            background: rgba(147, 112, 219, 0.15);
+            color: #9370db;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .status-production {
+            background: rgba(80, 200, 120, 0.2);
+            color: #50c878;
+        }
+
+        .status-pilot {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        .status-development {
+            background: rgba(0, 150, 255, 0.2);
+            color: #0096ff;
+        }
+
+        .status-concept {
+            background: rgba(150, 150, 150, 0.2);
+            color: #999;
+        }
+
+        .status-yes {
+            background: rgba(80, 200, 120, 0.2);
+            color: #50c878;
+        }
+
+        .status-no {
+            background: rgba(255, 99, 71, 0.2);
+            color: #ff6347;
+        }
+
+        .status-ready {
+            background: rgba(80, 200, 120, 0.2);
+            color: #50c878;
+        }
+
+        .status-needs-prep {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        .status-update {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+        }
+
+        .status-empty {
+            background: rgba(150, 150, 150, 0.1);
+            color: #666;
+        }
+
+        .price-cell {
+            font-family: monospace;
+            color: #50c878;
+        }
+
+        .link-cell a {
+            color: #0096ff;
+            text-decoration: none;
+        }
+
+        .link-cell a:hover {
+            text-decoration: underline;
+        }
+
+        .result-cell {
+            color: #50c878;
+        }
+
+        .case-cell {
+            font-size: 12px;
+        }
+
+        .case-client {
+            font-weight: 500;
+            color: #fff;
+        }
+
+        .case-result {
+            color: #888;
+            font-size: 11px;
+        }
+
+        .empty-cell {
+            color: #444;
+            font-style: italic;
+        }
+
+        .expand-cell {
+            max-width: 300px;
+            white-space: normal;
+            line-height: 1.5;
+        }
+
+        .stats {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            background: #111;
+            border-radius: 8px;
+            border: 1px solid #222;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0096ff;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .legend {
+            margin-top: 20px;
+            padding: 15px 20px;
+            background: #111;
+            border-radius: 8px;
+            border: 1px solid #222;
+        }
+
+        .legend-title {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .legend-items {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .note {
+            margin-top: 20px;
+            padding: 15px 20px;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 8px;
+            color: #ffc107;
+            font-size: 13px;
+        }
+
+        .note-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .stats {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">QSOFT</div>
+        <h1 class="title">Каталог решений</h1>
+        <p class="subtitle">Сводная таблица решений для клиентских дней • Данные с сайта qsoft.ru</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-value">12</div>
+            <div class="stat-label">Решений</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">20+</div>
+            <div class="stat-label">Лет опыта</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">1000+</div>
+            <div class="stat-label">Проектов</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">200+</div>
+            <div class="stat-label">Сотрудников</div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="filter-group">
+            <span class="filter-label">Категория:</span>
+            <select id="filterCategory">
+                <option value="">Все</option>
+                <option value="portal">Корпоративные порталы</option>
+                <option value="ecom">E-commerce</option>
+                <option value="mobile">Мобильные приложения</option>
+                <option value="ai">AI и автоматизация</option>
+                <option value="integration">Интеграции</option>
+                <option value="support">Поддержка</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <span class="filter-label">Поиск:</span>
+            <input type="text" id="search" placeholder="Название, описание...">
+        </div>
+    </div>
+
+    <div class="view-tabs">
+        <div class="view-tab active" data-view="all">Все данные</div>
+        <div class="view-tab" data-view="overview">Обзор</div>
+        <div class="view-tab" data-view="cases">Кейсы</div>
+        <div class="view-tab" data-view="readiness">Готовность</div>
+    </div>
+
+    <div class="table-container">
+        <table id="solutionsTable">
+            <thead>
+                <tr>
+                    <th colspan="6" class="section-header">ИДЕНТИФИКАЦИЯ</th>
+                    <th colspan="4" class="section-header">СУТЬ И ЦЕННОСТЬ</th>
+                    <th colspan="4" class="section-header">ЦЕЛЕВАЯ АУДИТОРИЯ</th>
+                    <th colspan="3" class="section-header">ФУНКЦИОНАЛЬНОСТЬ</th>
+                    <th colspan="3" class="section-header">AI-КОМПОНЕНТ</th>
+                    <th colspan="4" class="section-header">КЕЙС 1</th>
+                    <th colspan="4" class="section-header">КЕЙС 2</th>
+                    <th colspan="3" class="section-header">КОНКУРЕНЦИЯ</th>
+                    <th colspan="5" class="section-header">КОММЕРЦИЯ</th>
+                    <th colspan="3" class="section-header">ПАРТНЁРЫ</th>
+                    <th colspan="5" class="section-header">ГОТОВНОСТЬ</th>
+                </tr>
+                <tr>
+                    <!-- ИДЕНТИФИКАЦИЯ -->
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Юнит</th>
+                    <th>Категория</th>
+                    <th>Владелец</th>
+                    <th>Обновлено</th>
+                    <!-- СУТЬ И ЦЕННОСТЬ -->
+                    <th>Описание</th>
+                    <th>Проблема</th>
+                    <th>Результат</th>
+                    <th>Цифры</th>
+                    <!-- ЦЕЛЕВАЯ АУДИТОРИЯ -->
+                    <th>Роли</th>
+                    <th>Отрасли</th>
+                    <th>Размер</th>
+                    <th>Триггеры</th>
+                    <!-- ФУНКЦИОНАЛЬНОСТЬ -->
+                    <th>Функции</th>
+                    <th>Стек</th>
+                    <th>Интеграции</th>
+                    <!-- AI -->
+                    <th>AI-сценарии</th>
+                    <th>AI-эффект</th>
+                    <th>AI-статус</th>
+                    <!-- КЕЙС 1 -->
+                    <th>Клиент</th>
+                    <th>Отрасль</th>
+                    <th>Результат</th>
+                    <th>Публичный</th>
+                    <!-- КЕЙС 2 -->
+                    <th>Клиент</th>
+                    <th>Отрасль</th>
+                    <th>Результат</th>
+                    <th>Публичный</th>
+                    <!-- КОНКУРЕНЦИЯ -->
+                    <th>Преимущества</th>
+                    <th>Конкуренты</th>
+                    <th>Отличия</th>
+                    <!-- КОММЕРЦИЯ -->
+                    <th>Модель</th>
+                    <th>Мин. цена</th>
+                    <th>Типовая цена</th>
+                    <th>Сроки</th>
+                    <th>Факторы</th>
+                    <!-- ПАРТНЁРЫ -->
+                    <th>Вендоры</th>
+                    <th>Статус</th>
+                    <th>На клиент. день</th>
+                    <!-- ГОТОВНОСТЬ -->
+                    <th>Презентация</th>
+                    <th>Ссылка</th>
+                    <th>Спикер 1</th>
+                    <th>Готовность</th>
+                    <th>Демо</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <!-- Решение 1: Интранет-порталы -->
+                <tr>
+                    <td class="id-cell">SOL-001</td>
+                    <td class="name-cell">Интранет-порталы</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-category">Корпоративные порталы</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="expand-cell">Разработка корпоративных порталов и интранет-решений для внутренних коммуникаций и автоматизации процессов</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td>1С-Битрикс24</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="case-cell"><span class="case-client">Совкомбанк</span></td>
+                    <td>Финансы</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-yes">Да</span></td>
+                    <td class="case-cell"><span class="case-client">Газпромбанк</span></td>
+                    <td>Финансы</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-yes">Да</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td>1С-Битрикс</td>
+                    <td>Золотой партнёр</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                </tr>
+
+                <!-- Решение 2: Интернет-магазины -->
+                <tr>
+                    <td class="id-cell">SOL-002</td>
+                    <td class="name-cell">Интернет-магазины</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-category">E-commerce</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="expand-cell">Разработка интернет-магазинов для розничной и оптовой торговли</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-industry">Ритейл</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td>1С-Битрикс</td>
+                    <td>1С</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="case-cell"><span class="case-client">ECCO</span></td>
+                    <td>Fashion / Ритейл</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-yes">Да</span></td>
+                    <td class="case-cell"><span class="case-client">Hoff</span></td>
+                    <td>Ритейл / Мебель</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-yes">Да</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td>1С-Битрикс</td>
+                    <td>Золотой партнёр</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                </tr>
+
+                <!-- Решение 3: Мобильные приложения -->
+                <tr>
+                    <td class="id-cell">SOL-003</td>
+                    <td class="name-cell">Мобильные приложения</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-category">Мобильные приложения</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="expand-cell">Разработка мобильных приложений для iOS и Android</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td>iOS, Android</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="case-cell"><span class="case-client">Магнит</span></td>
+                    <td>Ритейл</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-yes">Да</span></td>
+                    <td class="case-cell"><span class="case-client">Росбанк</span></td>
+                    <td>Финансы</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-yes">Да</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                </tr>
+
+                <!-- Решение 4: Highload-проекты -->
+                <tr>
+                    <td class="id-cell">SOL-004</td>
+                    <td class="name-cell">Highload-проекты</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-category">E-commerce</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="expand-cell">Разработка и оптимизация высоконагруженных веб-проектов</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-size">Enterprise</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="case-cell"><span class="case-client">Спортмастер</span></td>
+                    <td>Ритейл / Спорт</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-yes">Да</span></td>
+                    <td class="case-cell"><span class="case-client">Hoff</span></td>
+                    <td>Ритейл / Мебель</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-yes">Да</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                </tr>
+
+                <!-- Решение 5: Интеграционные решения -->
+                <tr>
+                    <td class="id-cell">SOL-005</td>
+                    <td class="name-cell">Интеграционные решения</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-category">Интеграции</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="expand-cell">Интеграция веб-проектов с корпоративными системами (ERP, CRM, WMS и др.)</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td>1С, SAP, CRM, WMS, ERP</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                </tr>
+
+                <!-- Решение 6: UX/UI дизайн -->
+                <tr>
+                    <td class="id-cell">SOL-006</td>
+                    <td class="name-cell">UX/UI дизайн</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-category">Дизайн</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="expand-cell">Проектирование пользовательских интерфейсов и опыта взаимодействия</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td>UX-исследования, прототипирование, UI-дизайн</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                </tr>
+
+                <!-- Решение 7: Техническая поддержка -->
+                <tr>
+                    <td class="id-cell">SOL-007</td>
+                    <td class="name-cell">Техническая поддержка</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-category">Поддержка</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="expand-cell">Техническая поддержка и развитие веб-проектов</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                </tr>
+
+                <!-- Решение 8: B2B-порталы -->
+                <tr>
+                    <td class="id-cell">SOL-008</td>
+                    <td class="name-cell">B2B-порталы</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-category">E-commerce</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="expand-cell">Разработка B2B-порталов для работы с дилерами и оптовыми клиентами</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-industry">Производство</span><span class="tag tag-industry">Дистрибуция</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td>Личный кабинет дилера, заказы, документооборот</td>
+                    <td>1С-Битрикс</td>
+                    <td>1С, ERP</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="case-cell"><span class="case-client">Bosch</span></td>
+                    <td>Производство</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-yes">Да</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td>1С-Битрикс</td>
+                    <td>Золотой партнёр</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                </tr>
+
+                <!-- Решение 9: Корпоративные сайты -->
+                <tr>
+                    <td class="id-cell">SOL-009</td>
+                    <td class="name-cell">Корпоративные сайты</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-category">Веб-разработка</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="expand-cell">Разработка корпоративных сайтов и промо-проектов</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td>1С-Битрикс</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="case-cell"><span class="case-client">Газпром нефть</span></td>
+                    <td>Нефтегаз</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-yes">Да</span></td>
+                    <td class="case-cell"><span class="case-client">Сбербанк</span></td>
+                    <td>Финансы</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-yes">Да</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td>1С-Битрикс</td>
+                    <td>Золотой партнёр</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                </tr>
+
+                <!-- Решение 10: Личные кабинеты -->
+                <tr>
+                    <td class="id-cell">SOL-010</td>
+                    <td class="name-cell">Личные кабинеты</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-category">Веб-разработка</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="expand-cell">Разработка личных кабинетов для клиентов и партнёров</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="case-cell"><span class="case-client">Ренессанс Страхование</span></td>
+                    <td>Страхование</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-yes">Да</span></td>
+                    <td class="case-cell"><span class="case-client">АльфаСтрахование</span></td>
+                    <td>Страхование</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-yes">Да</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                </tr>
+
+                <!-- Решение 11: Маркетплейсы -->
+                <tr>
+                    <td class="id-cell">SOL-011</td>
+                    <td class="name-cell">Маркетплейсы</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-category">E-commerce</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="expand-cell">Разработка маркетплейсов и торговых площадок</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-industry">Ритейл</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td>Мультивендорность, управление продавцами, модерация</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                </tr>
+
+                <!-- Решение 12: Аналитика и BI -->
+                <tr>
+                    <td class="id-cell">SOL-012</td>
+                    <td class="name-cell">Аналитика и BI</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="tag tag-category">Аналитика</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="expand-cell">Внедрение систем аналитики и бизнес-аналитики</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                    <td class="empty-cell">—</td>
+                    <td><span class="status status-empty">—</span></td>
+                    <td class="empty-cell">—</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="note">
+        <div class="note-title">⚠️ Требуется заполнение</div>
+        Таблица заполнена на основе публичной информации с сайта qsoft.ru. Поля, отмеченные «—», требуют заполнения менеджерами на основе внутренней информации.
+    </div>
+
+    <div class="legend">
+        <div class="legend-title">Клиенты из портфолио QSOFT (с сайта)</div>
+        <div class="legend-items">
+            <div class="legend-item"><span class="tag tag-industry">Ритейл</span> Магнит, Hoff, Спортмастер, ECCO</div>
+            <div class="legend-item"><span class="tag tag-industry">Финансы</span> Сбербанк, Газпромбанк, Совкомбанк, Росбанк</div>
+            <div class="legend-item"><span class="tag tag-industry">Страхование</span> Ренессанс Страхование, АльфаСтрахование</div>
+            <div class="legend-item"><span class="tag tag-industry">Производство</span> Bosch, Газпром нефть</div>
+        </div>
+    </div>
+
+    <div class="legend">
+        <div class="legend-title">Партнёрские статусы</div>
+        <div class="legend-items">
+            <div class="legend-item">
+                <span class="status status-production">1С-Битрикс</span>
+                <span>— Золотой сертифицированный партнёр</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Переключение представлений
+        const viewTabs = document.querySelectorAll('.view-tab');
+        const table = document.getElementById('solutionsTable');
+
+        viewTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                viewTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // Простой поиск
+        const searchInput = document.getElementById('search');
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const rows = table.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+
+        // Фильтр по категории
+        const categoryFilter = document.getElementById('filterCategory');
+        categoryFilter.addEventListener('change', (e) => {
+            const category = e.target.value.toLowerCase();
+            const rows = table.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                if (!category) {
+                    row.style.display = '';
+                    return;
+                }
+                const categoryCell = row.querySelector('td:nth-child(4)');
+                const text = categoryCell ? categoryCell.textContent.toLowerCase() : '';
+                row.style.display = text.includes(category) ? '' : 'none';
+            });
+        });
+    </script>
+
+</body>
+</html>
